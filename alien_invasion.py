@@ -30,12 +30,7 @@ class AlienInvasion:
             # 监视键盘和鼠标事件
             self._check_events()
             self.ship.update()
-            self.bullets.update()
-
-            # 删除消失的子弹
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
+            self._update_bullets()
             # 每次循环时都重绘屏幕
             self._update_screen()
 
@@ -80,6 +75,16 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         pygame.display.flip()
+
+    def _update_bullets(self):
+        """更新子弹的位置并删除消失的子弹"""
+        # 更新子弹的位置
+        self.bullets.update()
+
+        # 删除消失的子弹
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
 
 if __name__ == '__main__':
