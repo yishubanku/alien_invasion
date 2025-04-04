@@ -37,6 +37,7 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self._update_bullets()
+            self._update_aliens()
             # 每次循环时都重绘屏幕
             self._update_screen()
 
@@ -103,6 +104,19 @@ class AlienInvasion:
         alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
         self.aliens.add(alien)
 
+    def _check_flet_edges(self):
+        """有外星人到达边缘时采取相应的措施"""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """将整群外星人下移，并改变它们的方向"""
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
+
     def _update_screen(self):
         """更新屏幕上的图像，并切换到新屏幕"""
         self.screen.fill(self.settings.bg_color)
@@ -122,6 +136,11 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+
+    def _update_aliens(self):
+        """更检查是否有外星人位于屏幕边缘，并更新整群外星人的位置"""
+        self._check_flet_edges()
+        self.aliens.update()
 
 
 if __name__ == '__main__':
