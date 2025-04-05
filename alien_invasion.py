@@ -72,6 +72,7 @@ class AlienInvasion:
             # 重置游戏统计信息
             self.stats.reset_stats()
             self.stats.game_active = True
+            self.settings.initialize_dynamic_settings()
 
             # 清空余下的外星人和子弹
             self.aliens.empty()
@@ -161,6 +162,7 @@ class AlienInvasion:
         # 如果游戏处于非活动状态，就绘制Play按钮
         if not self.stats.game_active:
             self.play_button.draw_button()
+            pygame.mouse.set_visible(True)
 
         pygame.display.flip()
 
@@ -185,6 +187,7 @@ class AlienInvasion:
             # 删除现有的子弹并新建一群外星人
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _ship_hit(self):
         """响应飞船被外星人撞到"""
